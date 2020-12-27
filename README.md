@@ -42,3 +42,12 @@
 > 3.
 >> AppLayout.js를 통해 레이아웃 페이지를 만들 수 있고, children 부분이 바뀌는 부분이다.
 >> AppLayout에서는 propTypes를 통해서 프롬스의 타입을 검사할 수 있다.
+
+## 1-6 Link와 eslint
+
+> 1.
+>> next에서는 react-router같은 거 필요 없다. 
+>> 자체적으로 router가 있음.
+>> import Link from 'next/link'; 로 불러와서 쓸 수 있음.
+> 2.
+>> eslint를 통해서 규칙을 정할 수 있음. 근데 설치해야 하는 게 좀 있는데 package.js 보면서 따라 설치하면 됨.

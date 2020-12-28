@@ -67,3 +67,15 @@
 >> react에 css 입힐 때 styled components를 이용할 거임 npm trend에서 검색해보니 emotion이 더 많이 쓰임.
 > 2.
 >> 공식문서보고 원하는 거 쓰면 됨.
+
+## 2-2. _app.js와 Head
+
+> 1.
+>> antd는 추가적인 css를 연결해줘야함.
+>> 공통적인 페이지를 만들 수 있는데, 거기에 넣어주자.
+>> 그 페이지의 이름은 _app.js임 
+
+> 2.
+>> next에서 head를 수정할 수 있는 head 컴포넌트가 있다.
+>> 그냥 head 막 넣으면 안된다. 
+

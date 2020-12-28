@@ -51,3 +51,19 @@
 >> import Link from 'next/link'; 로 불러와서 쓸 수 있음.
 > 2.
 >> eslint를 통해서 규칙을 정할 수 있음. 근데 설치해야 하는 게 좀 있는데 package.js 보면서 따라 설치하면 됨.
+
+## 1-7 Q&A 
+
+> 1.
+>> 서버사이드랜더링할 때 브라우저-백엔드간 요청에 CORS 설정이 필요하다. 
+>> 브라우져가 react이고 프론트 서버, 백엔드 서버가 node인 거임.
+
+# antd 사용해 SNS 화면 만들기 
+
+## 2-1. antd와 styled-components 
+
+> 1.
+>> ant.design를 이용해서 디자인 소스 이용할 거임. 다만 개성이 좀 사라짐.. 
+>> react에 css 입힐 때 styled components를 이용할 거임 npm trend에서 검색해보니 emotion이 더 많이 쓰임.
+> 2.
+>> 공식문서보고 원하는 거 쓰면 됨.

@@ -107,3 +107,9 @@
 
 > 2.
 >> 혹은 useMemo 써야 한다. 
+
+## 2-6 더미 데이터로 로그인하기
+
+> 1.
+>> <Form> 태그에서 onSubmitForm은 없고 onFinish라고 있다. 
+>> antd 에는 기본적으로 e함수가 포함되어 있기 때문에, e.target.value를 바로바로 쓸 수 있다. 

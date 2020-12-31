@@ -11,7 +11,7 @@ const configureStore = () => {
     return store;
 };
 
-const wrapper = creteWrapper(configureStore, {
+const wrapper = createrapper(configureStore, {
     debug:precess.env.NODE_ENV==='development',
 });
 

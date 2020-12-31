@@ -23,7 +23,7 @@ export const logoutAction = (data) => {
     }
 }
 
-const CHANGE_NICKNAME = {  // 이게 액션임
+/* const CHANGE_NICKNAME = {  // 이게 액션임
     type: 'CHANGE_NICKNAME',
     date: 'dlscjf12',
 };
@@ -33,7 +33,7 @@ const CHANGE_NICKNAME = (data) => {  // 동적 액션임
         type:'CHANGE_NICKNAME',
         data,
     }
-};
+}; */
 
 //CHANGE_NICKNAME('dlscjf12');  // 동적 액션을 이렇게 사용하면 됨.
 //store.dispatch(CHANGE_NICKNAME('dlscjf12')); // 이렇게 디스패치 보낼 수도 있음.

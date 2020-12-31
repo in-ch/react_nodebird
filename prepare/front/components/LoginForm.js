@@ -2,7 +2,8 @@ import React, { useState, useCallback } from 'react';
 import { Button, Form } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
-
+import { useDispatch } from 'react-redux';
+import { login } from '..reducers';
 const ButtonWrapper = styled.div`
     margin-top: 10px;margin-left:10px;
 `;
@@ -14,6 +15,7 @@ const FormWrapper = styled(Form)`
 const LoginFrom = ({setIsLoggedIn}) => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
     
     const onChangeId = useCallback((e)=>{
         setId(e.target.value);
@@ -24,8 +26,8 @@ const LoginFrom = ({setIsLoggedIn}) => {
     },[]);
 
     const onSubmitForm = useCallback(() => {
-        console.log(id, password);
-        setIsLoggedIn(true);
+        //setIsLoggedIn(true);
+        dispatch(login({id, password}));
     },[id, password]);
 
     return (

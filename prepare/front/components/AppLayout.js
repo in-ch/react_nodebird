@@ -2,13 +2,15 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Input, Row, Col } from 'antd';
-
 import LoginForm from '../components/LoginForm';
 import UserProfile from '../components/UserProfile';
+import { useSelector } from 'react-redux';
+import LoginFrom from '../components/LoginForm';
 
 const AppLayout = ({children}) => {
 
-    const [isLoggedIn ,setIsLoggedIn] = useState(false);
+    //const [isLoggedIn ,setIsLoggedIn] = useState(false); 리덕스쓸꺼니깐 필요없음
+    const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
     
     return (
         <div>
@@ -29,7 +31,9 @@ const AppLayout = ({children}) => {
 
             <Row gutter={8}>
                 <Col xs={24} md={6}>   
-                    {isLoggedIn ? <UserProfile setIsLoggedIn={setIsLoggedIn} /> : <LoginForm setIsLoggedIn = {setIsLoggedIn} />}
+                    {//isLoggedIn ? <UserProfile setIsLoggedIn={setIsLoggedIn} /> : /*<LoginForm setIsLoggedIn = {setIsLoggedIn} 이제 프롭스로 받을 필요 없음. />
+                        isLoggedIn ? <UserProfile setIsLoggedIn={setIsLoggedIn} /> : <LoginForm /> 
+                    }
                 </Col>
                 <Col xs={24} md={12}>
                     {children}

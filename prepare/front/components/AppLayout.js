@@ -10,7 +10,9 @@ import LoginFrom from '../components/LoginForm';
 const AppLayout = ({children}) => {
 
     //const [isLoggedIn ,setIsLoggedIn] = useState(false); 리덕스쓸꺼니깐 필요없음
-    const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+    //const isLoggedIn = useSelector((state) => state.user.isLoggedIn); // 아래 구조분해하면 객체처럼 쓰면 그냥 바로 쓸 수 있음.
+    const { isLoggedIn } = useSelector((state) => state.user);
+    
     
     return (
         <div>

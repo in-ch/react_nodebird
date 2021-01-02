@@ -3,7 +3,7 @@ import { Button, Form } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { login } from '../reducers';
+import { login } from '../reducers/user';
 const ButtonWrapper = styled.div`
     margin-top: 10px;margin-left:10px;
 `;

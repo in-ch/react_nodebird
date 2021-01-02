@@ -171,3 +171,10 @@
 >> 배포모드 일 때는 devtools로 바꿀 수가 있다. 
 > 3.
 >> 만약 포트 port 바꾸고 싶다면 package.js부분에 scripts 부분에서 dev를 next -p 3060 등으로 바꾸면 됨
+
+# 리듀서 쪼개기
+
+> 1. 
+>> 나중에 action이랑 case가 너무 많아지니 쪼개야 한다. 
+> 2.
+>> 쪼개고 combineReducers를 통해서 합쳐줄 수 있다. 

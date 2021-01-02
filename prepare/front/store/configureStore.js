@@ -1,18 +1,17 @@
-import { creteWrapper } from 'next-redux-wrapper';
-import { createStore } from 'redux';
+import { createWrapper } from 'next-redux-wrapper';
+import { compose, createStore, applyMiddleware } from 'redux';
 import reducer from '../reducers';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const configureStore = () => {
-    const store = createStore(reducer);
-    store.dispatch({
-        type: 'CHANGE_NICKNAME',
-        data: 'dlscjf12'
-    })
+    const middelwares = [];
+    const enhancer = process.env.NODE_ENV === 'production'
+    ? compose(applyMiddleware(...middelwares))
+    : composeWithDevTools(applyMiddleware(...middelwares))
+    const store = createStore(reducer, enhancer);
     return store;
 };
 
-const wrapper = createrapper(configureStore, {
-    debug:precess.env.NODE_ENV==='development',
-});
+const wrapper = createWrapper(configureStore, { debug: process.env.NODE_ENV === 'development' });
 
 export default wrapper;

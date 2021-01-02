@@ -3,7 +3,7 @@ import { Button, Form } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { login } from '..reducers';
+import { login } from '../reducers';
 const ButtonWrapper = styled.div`
     margin-top: 10px;margin-left:10px;
 `;
@@ -43,7 +43,7 @@ const LoginFrom = ({setIsLoggedIn}) => {
                 <input name="user-password" value={password} onChange={onChangePassword} required />            
             </div>
             <ButtonWrapper>
-                <Button type="primary" htmlType="submit" loading={false}>로그인</Button>
+                <Button type="primary" htmlType="submit" onClick={onSubmitForm} loading={false}>로그인</Button>
                 <Link href="/signup"><a><Button>회원가입</Button></a></Link>
             </ButtonWrapper>
         </FormWrapper>

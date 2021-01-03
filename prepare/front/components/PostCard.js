@@ -5,6 +5,8 @@ import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, Ellipsis
 import PropTypes from 'prop-types';
 import PostImages from './PostImages';
 import PostCardContent from './PostCardContent';
+import CommentForm from './CommentForm';
+import Link from 'next/link';
 
 const PostCard = ({post}) => {
     
@@ -57,8 +59,29 @@ const PostCard = ({post}) => {
                     description={<PostCardContent postData={post.content} />}
                 />
             </Card>
-{/*             <CommentForm />
-            <Comments /> */}
+            {commentFormOpened && (
+                <>
+                <CommentForm post={post} />
+                <List
+                    header={`${post.Comments.length} 댓글`}
+                    itemLayout="horizontal"
+                    dataSource={post.Comments}
+                    renderItem={(item) => (
+                    <li>
+                        <Comment
+                        author={item.User.nickname}
+                        avatar={(
+                            <Link href={{ pathname: '/user', query: { id: item.User.id } }} as={`/user/${item.User.id}`}>
+                            <a><Avatar>{item.User.nickname[0]}</Avatar></a>
+                            </Link>
+                        )}
+                        content={item.content}
+                        />
+                    </li>
+                    )}
+                />
+                </>
+            )}
         </>
     )
 }

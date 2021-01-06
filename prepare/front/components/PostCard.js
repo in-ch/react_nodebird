@@ -69,11 +69,11 @@ const PostCard = ({post}) => {
                     renderItem={(item) => (
                     <li>
                         <Comment
-                        author={item.User.nickname}
-                        avatar={(
-                            <Link href={{ pathname: '/user', query: { id: item.User.id } }} as={`/user/${item.User.id}`}>
-                            <a><Avatar>{item.User.nickname[0]}</Avatar></a>
-                            </Link>
+                            author={item.User.nickname}
+                            avatar={(
+                                <Link href={{ pathname: '/user', query: { id: item.User.id } }} as={`/user/${item.User.id}`}>
+                                    <a><Avatar>{item.User.nickname[0]}</Avatar></a>
+                                </Link>
                         )}
                         content={item.content}
                         />

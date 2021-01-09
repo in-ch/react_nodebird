@@ -1,21 +1,25 @@
 import { createWrapper } from 'next-redux-wrapper';
 import { compose, createStore, applyMiddleware } from 'redux';
 import reducer from '../reducers';
-import thunkMiddleware from 'redux-thunk';
+//import thunkMiddleware from 'redux-thunk';
+import createSageMiddleware from 'redux-saga';
+import rootSaga from '../sagas';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 
-const loggerMiddleware = ({dispatch, getState}) => (next) => (action) => {
+ const loggerMiddleware = ({dispatch, getState}) => (next) => (action) => {
     console.log(action);
     return next(action);
-};   // 이렇게 미들웨어를 커스터마이징할 수 있음. 
+};   // 이렇게 미들웨어를 커스터마이징할 수 있음.  
 
 const configureStore = () => {
-    const middelwares = [thunkMiddleware, loggerMiddleware];
+    const sagaMiddleware = createSageMiddleware();
+    const middelwares = [sagaMiddleware, loggerMiddleware];
     const enhancer = process.env.NODE_ENV === 'production'
     ? compose(applyMiddleware(...middelwares))
     : composeWithDevTools(applyMiddleware(...middelwares))
     const store = createStore(reducer, enhancer);
+    store.sagaTask = sagaMiddleware.run(rootSaga);
     return store;
 };
 

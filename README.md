@@ -228,3 +228,13 @@
 >> thunk는 그냥 지연의 의미만 담은 프로그래밍적 단어이다.
 > 4.
 >> 원래 action은 request, success, failure 이렇게 3개씩 나눠야 한다.  
+
+## 4-2 sage 설치하고 generator 이해하기
+> 1.
+>> function* 이 있는데 generator라는 문법이다.
+> 2.
+>> generator는 함수인데 안에 yield;(발음: 일드) 라는 것이 있다. 역활은 기준점같은 것임.
+> 3. 
+>> 실행하기 위해서는 generator.next()라는 것을 통해서 실행해야함. 그러면 yield를 기준으로 함수가 실행됨. 즉, 중단점이 있는 것임. 다 끝나면 done이 true가 됨.
+> 4.
+>> while(true)를 쓰면 절대 멈추지 않는 함수가 됨.

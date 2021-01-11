@@ -1,27 +1,44 @@
-import { all, fork, call, take, put } from 'redux-saga/effects';
+import { all, fork, call, take, put, delay } from 'redux-saga/effects';
 
-function logInAPI() {
-    //return axios.post('/api/login')
-}
-
-function* logIn() {
-    try{
-        const result = yield call(logInAPI)
-        yield put({
-            type: 'LOG_IN_SUCCESS',
-            data: result.data
-        });
-    } catch(err) {
-        const result = yield call(logInAPI)
-        yield put({
-            type: 'LOG_IN_FAILURE',
-            data: err.response.data
-        });
+function* logIn(action) {
+    try {
+      console.log('saga logIn');
+      // const result = yield call(logInAPI);
+      yield delay(1000);
+      yield put({
+        type: LOG_IN_SUCCESS,
+        data: action.data,
+      });
+    } catch (err) {
+      console.error(err);
+      yield put({
+        type: LOG_IN_FAILURE,
+        error: err.response.data,
+      });
     }
-    
-}
+  }
+  
+  function logOutAPI() {
+    return axios.post('/api/logout');
+  }
+  
+  function* logOut() {
+    try {
+      // const result = yield call(logOutAPI);
+      yield delay(1000);
+      yield put({
+        type: LOG_OUT_SUCCESS,
+      });
+    } catch (err) {
+      console.error(err);
+      yield put({
+        type: LOG_OUT_FAILURE,
+        error: err.response.data,
+      });
+    }
+  }
 
-function* watchLogIn() {
+function* watchLogIn() {  // 이벤트 리스너 역활을 함. 
     yield take('LOG_IN_REQUEST');
 }
 

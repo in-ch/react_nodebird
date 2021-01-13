@@ -33,6 +33,7 @@ const ADD_POST = 'ADD_POST';
 export const addPost = {
     type:ADD_POST,
 }
+
 const dummyPost = {
     id: 2,
     content: '더미데이터입니다.',

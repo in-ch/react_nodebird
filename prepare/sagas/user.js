@@ -44,10 +44,10 @@ function* logOut() {
 }
 
 function* watchLogIn() {
-    yield takeLatest(LOG_IN_REQUEST, logIn);  // LOG_IN_REQUEST가 실행될 때 까지 기다리겠다는 뜻이다. 실행되면 logIn함수가 호출된다.
+    yield takeLatest('LOG_IN_REQUEST', logIn);  // LOG_IN_REQUEST가 실행될 때 까지 기다리겠다는 뜻이다. 실행되면 logIn함수가 호출된다.
 }
 function* watchLogOut() {
-    yield takeLatest(LOG_OUT_REQUEST, logOut);
+    yield takeLatest('LOG_OUT_REQUEST', logOut);  // throttle 쓰면 몇 초에 한 번씩 보내라고 구현할 수 있음.
 }
 
 export default function* userSaga() {

@@ -17,7 +17,7 @@ const LoginFrom = ({setIsLoggedIn}) => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
-    const {isLoggingIn} = useSelector((state)=> state.user);
+    const {loginDo} = useSelector((state)=> state.user);
     
     const onChangeId = useCallback((e)=>{
         setId(e.target.value);

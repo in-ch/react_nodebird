@@ -1,3 +1,14 @@
+const dummyPost = {
+  id: 2,
+  content: '더미데이터입니다.',
+  User: {
+    id: 1,
+    nickname: '제로초',
+  },
+  Images: [],
+  Comments: [],
+};
+
 export const initialState = {
   mainPosts: [{
     id: 1,
@@ -26,34 +37,75 @@ export const initialState = {
     }]
   }],
   imagePaths: [],
-  postAdded: false,
+  addPostLoading: false,
+  addPostDone: false,
+  addPostError: null,
+  addCommentLoading: false,
+  addCommentDone: false,
+  addCommentError: null,
+  
 };
 
-const ADD_POST = 'ADD_POST';
-export const addPost = {
-    type:ADD_POST,
-}
+export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
+export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
+export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
 
-const dummyPost = {
-    id: 2,
-    content: '더미데이터입니다.',
-    User: {
-      id: 1,
-      nickname: '제로초',
-    },
-    Images: [],
-    Comments: [],
-  };
+export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
+export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
+export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+
+export const addPost = (data) => ({
+    type:ADD_POST_REQUEST,
+    data,
+});
+
+
 
 
 const reducer = ((state=initialState,action)=>{
     switch (action.type){
-        case ADD_POST:
+        case ADD_POST_REQUEST:
+            return{
+                ...state,
+                addPostLoading: true,
+                addPostDone: false,
+                addPostError: null,
+            }
+        case ADD_POST_SUCCESS:
             return{
                 ...state,
                 mainPosts: [dummyPost, ...state.mainPosts], // 순서 바뀌면 글이 밑에 추가됨.
-                postAdded: true,
+                addPostLoading: false,
+                addPostDone: true,
+                addPostError: null,
             };
+        case ADD_POST_FAILURE:
+            return{
+                addPostLoading: false,
+                addPostDone: false,
+                addPostError: action.error,
+            }
+        case ADD_COMMENT_REQUEST:
+            return{
+                ...state,
+                addCOMMENTLoading: true,
+                addCOMMENTDone: false,
+                addCOMMENTError: null,
+            }
+        case ADD_COMMENT_SUCCESS:
+            return{
+                ...state,
+                mainPosts: [dummyPost, ...state.mainPosts], // 순서 바뀌면 글이 밑에 추가됨.
+                addCOMMENTLoading: false,
+                addCOMMENTDone: true,
+                addCOMMENTError: null,
+            };
+        case ADD_COMMENT_FAILURE:
+            return{
+                addCOMMENTLoading: false,
+                addCOMMENTDone: false,
+                addCOMMENTError: action.error,
+            }
         default:
             return state;
     }

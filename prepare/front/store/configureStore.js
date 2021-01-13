@@ -14,12 +14,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 const configureStore = () => {
     const sagaMiddleware = createSageMiddleware();
-    const middelwares = [sagaMiddleware, loggerMiddleware];
+    const middelwares = [sagaMiddleware, loggerMiddleware];  // saga 미들웨어는 기능이 더 많다. 
     const enhancer = process.env.NODE_ENV === 'production'
     ? compose(applyMiddleware(...middelwares))
     : composeWithDevTools(applyMiddleware(...middelwares))
     const store = createStore(reducer, enhancer);
-    store.sagaTask = sagaMiddleware.run(rootSaga);
+    store.sagaTask = sagaMiddleware.run(rootSaga);  //rootSaga는 이제 작성하면 된다.
     return store;
 };
 

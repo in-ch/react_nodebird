@@ -16,21 +16,21 @@ function* addPost(action) {
         yield delay(1000);
         const id = shortId.generate();
         yield put({
-        type: ADD_POST_SUCCESS,
-        data: {
-            id,
-            content: action.data,
-        },
+            type: ADD_POST_SUCCESS,
+            data: {
+                id,
+                content: action.data,
+            },
         });
         yield put({
-        type: ADD_POST_TO_ME,
-        data: id,
+            type: ADD_POST_TO_ME,
+            data: id,
         });
     } catch (err) {
         console.error(err);
         yield put({
-        type: ADD_POST_FAILURE,
-        data: err.response.data,
+            type: ADD_POST_FAILURE,
+            data: err.response.data,
         });
     }
 }

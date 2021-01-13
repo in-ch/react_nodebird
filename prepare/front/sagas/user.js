@@ -25,6 +25,7 @@ function* logIn(action) {
     try {
         // const result = yield call(logInAPI, action.data);   나중에 서버에 요청을 보낼 것이다.
         yield delay(1000);
+        console.log('hello');
         yield put({   // put은 dispatch같은 거다.
             type: LOG_IN_SUCCESS,
             data: action.data,

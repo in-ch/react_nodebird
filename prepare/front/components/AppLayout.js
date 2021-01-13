@@ -11,8 +11,7 @@ const AppLayout = ({children}) => {
 
     //const [isLoggedIn ,setIsLoggedIn] = useState(false); 리덕스쓸꺼니깐 필요없음
     //const isLoggedIn = useSelector((state) => state.user.isLoggedIn); // 아래 구조분해하면 객체처럼 쓰면 그냥 바로 쓸 수 있음.
-    const { isLoggedIn } = useSelector((state) => state.user);
-    
+    const { me } = useSelector((state) => state.user);
     
     return (
         <div>
@@ -34,7 +33,7 @@ const AppLayout = ({children}) => {
             <Row gutter={8}>
                 <Col xs={24} md={6}>   
                     {//isLoggedIn ? <UserProfile setIsLoggedIn={setIsLoggedIn} /> : /*<LoginForm setIsLoggedIn = {setIsLoggedIn} 이제 프롭스로 받을 필요 없음. />
-                        isLoggedIn ? <UserProfile /> : <LoginForm /> 
+                        me ? <UserProfile /> : <LoginForm /> 
                     }
                 </Col>
                 <Col xs={24} md={12}>

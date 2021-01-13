@@ -1,10 +1,12 @@
-const dummyUser = {
+const dummyUser = (data) => ({
+  ...data,
+  nickname: '제로초',
   id: 1,
-  nickname: '인철',
-  Posts: [],
-  Followings: [],
-  Followers: [],
-};
+  Posts: [{ id: 1 }],
+  Followings: [{ nickname: '부기초' }, { nickname: 'Chanho Lee' }, { nickname: 'neue zeal' }],
+  Followers: [{ nickname: '부기초' }, { nickname: 'Chanho Lee' }, { nickname: 'neue zeal' }],
+});
+
 
 export const initialState = {
   followLoading: false, // 팔로우 시도중
@@ -94,6 +96,8 @@ const reducer =  (state = initialState, action) => {
         logInDone: false,
       };
     }
+
+    
     case LOG_OUT_REQUEST: {
       return {
         ...state,
@@ -108,7 +112,7 @@ const reducer =  (state = initialState, action) => {
         logOutDone: true,
         logOutLoading: false,
         logOutError: null,
-        user: null,
+        me: null,
       };
     }
     case LOG_OUT_FAILURE: {

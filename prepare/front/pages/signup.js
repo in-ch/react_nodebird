@@ -4,6 +4,8 @@ import { Form, Input, Checkbox, Button } from 'antd';
 import { useCallback, useState } from 'react';
 import useInput from '../hooks/useinput';
 import styled from 'styled-components';
+import { SIGN_UP_REQUEST } from '../reducers/user';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ErrorMessage = styled.div`
     color:red;
@@ -34,7 +36,10 @@ const Signup = () => {
     }, []); 
     const onChangePasswordError = useCallback(()=>{
     }, []); */
-    const [id, onChangeId] = useInput('');
+    const dispatch = useDispatch();
+    const { signUpLoading } = useSelector((state) => state.user);
+
+    const [email, onChangeEmail] = useInput('');
     const [nickname, onChangeNickname] = useInput('');
     const [password, onChangePassword] = useInput('');
 
@@ -50,6 +55,10 @@ const Signup = () => {
         if(!term){
             return setTermError(true);
         }
+        dispatch({
+            type: SIGN_UP_REQUEST,
+            data: {email, password, nickname}
+        });
     }, [password,passwordCheck, term]);
 
     const onChangePasswordCheck = useCallback((e) => {
@@ -73,9 +82,9 @@ const Signup = () => {
             </Head>
             <Form onFinish={onSubmit}>
                 <div>
-                    <label htmlFor="user-id">아이디</label>
+                    <label htmlFor="user-email">이메일</label>
                     <br/>
-                    <Input name="user-id" value={id} required onChange={onChangeId}/>
+                    <Input name="user-email" value={email} required onChange={onChangeEmail}/>
                 </div>
                 <div>
                     <label htmlFor="user-nickname">닉네임</label>
@@ -98,7 +107,7 @@ const Signup = () => {
                     {termError&& <TermErrorMessage>약관에 동의하셔야 합니다.</TermErrorMessage>}
                 </div>
                 <div style={{marginTop: 10}}>
-                    <Button type="primary" htmlType="submit">가입하기</Button>
+                    <Button type="primary" htmlType="submit" loading={signUpLoading}>가입하기</Button>
                 </div>
             </Form>
 

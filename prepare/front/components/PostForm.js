@@ -1,21 +1,33 @@
 import {Form, Input, Button} from 'antd';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPost } from '../reducers/post';
+import { ADD_POST_REQUEST } from '../reducers/post';
 
 const PostForm = () => {
     const dispatch = useDispatch();
-    const { imagePaths, postAdded } = useSelector(state => state.post);
+    const { imagePaths, addPostDone } = useSelector(state => state.post);
     const [text, setText] = useState('');
     const imageInput = useRef();
 
+    useEffect(() => {    // 서버가 오류를 냈는데 작성한 글이 지워지면 안되니깐
+        if (addPostDone) {
+          setText('');
+        }
+      }, [addPostDone]);
+
     const onSubmit = useCallback(()=> {
-        dispatch(addPost);
-        setText('');
-    }, []);
+        dispatch({
+            type: ADD_POST_REQUEST,
+            data : {
+                text,
+            },
+        });
+    }, [text]);
+
     const onChangeText = useCallback((e)=> {
         setText(e.target.value);
     }, []);
+
     const onClickImageUpload = useCallback(()=>{
         imageInput.current.click();
     },[imageInput.current]);

@@ -7,8 +7,6 @@ function addPostAPI(data) {
 
 
 
-
-
 function* addPost(action) {
     try {
         // const result = yield call(addPostAPI, action.data);
@@ -37,12 +35,12 @@ function* addPost(action) {
 
 
 function* watchAddPost() {
-    yield take('ADD_POST_REQUEST');   // ADD_POST_REQUEST가 실행될 때 까지 기다리겠다는 뜻이다.
+    yield takeLatest('ADD_POST_REQUEST',addPost);   // ADD_POST_REQUEST가 실행될 때 까지 기다리겠다는 뜻이다.
 }
 
 
 export default function* postSaga() {
     yield all([
-        fort(watchAddPost),
+        fork(watchAddPost),
     ])
 }

@@ -52,7 +52,7 @@ function* watchLogOut() {
 
 export default function* userSaga() {
     yield all([
-        fort(watchLogIn),
-        fort(watchLogOut),
+        fork(watchLogIn),
+        fork(watchLogOut),
     ])
 }

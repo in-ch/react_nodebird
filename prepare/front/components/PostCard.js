@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Card, Button, Avatar, Popover, List, Comment } from 'antd';
 import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, EllipsisOutlined  } from '@ant-design/icons';
@@ -22,7 +22,6 @@ const PostCard = ({post}) => {
     const onToggleComment = useCallback(() => {
         setCommentFormOpened((prev) => !prev);
     }, []);
-
      return (
         <>
             <Card

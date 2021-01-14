@@ -21,13 +21,8 @@ function* addPost(action) {
         yield put({
             type: ADD_POST_SUCCESS,
             data: {
-                id,
                 content: action.data,
             },
-        });
-        yield put({
-            type: ADD_POST_TO_ME,
-            data: id,
         });
     } catch (err) {
         yield put({

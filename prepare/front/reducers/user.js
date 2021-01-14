@@ -147,6 +147,30 @@ const reducer =  (state = initialState, action) => {
         signUpError: action.error,
       };
     }
+    case CHANGE_NICKNAME_REQUEST: {
+      return {
+        ...state,
+        changeNicknameLoading: true, 
+        changeNicknameDone: false,
+        changeNicknameError: null,
+      };
+    }
+    case CHANGE_NICKNAME_SUCCESS: {
+      return {
+        ...state,  
+        changeNicknameLoading: false, 
+        changeNicknameDone: true,
+        changeNicknameError: null,
+      };
+    }
+    case CHANGE_NICKNAME_FAILURE: {
+      return {
+        ...state,
+        changeNicknameLoading: false,
+        changeNicknameDone: false,
+        changeNicknameError: action.error,
+      };
+    }
     default: {
       return {
         ...state,

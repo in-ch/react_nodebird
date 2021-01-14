@@ -1,13 +1,13 @@
-const dummyPost = {
+const dummyPost = (data) => ({
   id: 2,
-  content: '더미데이터입니다.',
+  content: data,
   User: {
     id: 1,
     nickname: '제로초',
   },
   Images: [],
   Comments: [],
-};
+});
 
 export const initialState = {
   mainPosts: [{
@@ -43,7 +43,6 @@ export const initialState = {
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
-  
 };
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
@@ -59,6 +58,10 @@ export const addPost = (data) => ({
     data,
 });
 
+export const addComment = (data) => ({
+  type:ADD_COMMENT_REQUEST,
+  data,
+});
 
 
 
@@ -70,28 +73,29 @@ const reducer = ((state=initialState,action)=>{
                 addPostLoading: true,
                 addPostDone: false,
                 addPostError: null,
-            }
+            };
         case ADD_POST_SUCCESS:
             return{
                 ...state,
-                mainPosts: [dummyPost, ...state.mainPosts], // 순서 바뀌면 글이 밑에 추가됨.
+                mainPosts: [dummyPost(action.data), ...state.mainPosts], // 순서 바뀌면 글이 밑에 추가됨.
                 addPostLoading: false,
                 addPostDone: true,
                 addPostError: null,
             };
         case ADD_POST_FAILURE:
             return{
+                ...state,
                 addPostLoading: false,
                 addPostDone: false,
                 addPostError: action.error,
-            }
+            };
         case ADD_COMMENT_REQUEST:
             return{
                 ...state,
                 addCOMMENTLoading: true,
                 addCOMMENTDone: false,
                 addCOMMENTError: null,
-            }
+            };
         case ADD_COMMENT_SUCCESS:
             return{
                 ...state,
@@ -105,7 +109,7 @@ const reducer = ((state=initialState,action)=>{
                 addCOMMENTLoading: false,
                 addCOMMENTDone: false,
                 addCOMMENTError: action.error,
-            }
+            };
         default:
             return state;
     }

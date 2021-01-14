@@ -8,7 +8,7 @@ const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
   const { addCommentDone } = useSelector((state) => state.post);
   const id = useSelector((state) => state.user.me?.id);
-  const [commentText, setCommentText, onChangeCommentText ] = useState('');
+  const [commentText, setCommentText ] = useState('');
 
   useEffect(()=>{
     if(addCommentDone){

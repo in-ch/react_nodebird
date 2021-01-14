@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginRequestAction } from '../reducers/user';
 
-const ButtonWrapper = styled.div`
-    margin-top: 10px;margin-left:10px;
+const ButtonWrapper = styled.span`
+    margin-top:10px;
 `;
 
 const FormWrapper = styled(Form)`

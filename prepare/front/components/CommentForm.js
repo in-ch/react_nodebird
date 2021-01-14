@@ -7,7 +7,8 @@ import { ADD_COMMENT_REQUEST } from '../reducers/post';
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
   const { addCommentDone } = useSelector((state) => state.post);
-  const [commentText, setCommentText] = useState('');
+  const id = useSelector((state) => state.user.me?.id);
+  const [commentText, setCommentText, onChangeCommentText ] = useState('');
 
   useEffect(()=>{
     if(addCommentDone){
@@ -18,7 +19,7 @@ const CommentForm = ({ post }) => {
   const onSubmitComment = useCallback(() => {
     dispatch({
       type: ADD_COMMENT_REQUEST,
-      data: {content: commentText, postId: post.id, userId, id}, 
+      data: {content: commentText, postId: post.id, userId: id}, 
     });
   }, [commentText, id]);
 

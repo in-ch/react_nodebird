@@ -1,54 +1,42 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import Link from 'next/link';
-import { Menu, Input, Row, Col } from 'antd';
-import LoginForm from '../components/LoginForm';
-import UserProfile from '../components/UserProfile';
+import PropTypes from 'prop-types';
+import { Col, Input, Menu, Row } from 'antd';
 import { useSelector } from 'react-redux';
-import LoginFrom from '../components/LoginForm';
 
-const AppLayout = ({children}) => {
+import LoginForm from './LoginForm';
+import UserProfile from './UserProfile';
 
-    //const [isLoggedIn ,setIsLoggedIn] = useState(false); 리덕스쓸꺼니깐 필요없음
-    //const isLoggedIn = useSelector((state) => state.user.isLoggedIn); // 아래 구조분해하면 객체처럼 쓰면 그냥 바로 쓸 수 있음.
-    const { me } = useSelector((state) => state.user);
-    
-    return (
-        <div>
-            <Menu mode="horizontal">
-                <Menu.Item>
-                    <Link href="/"><a>노드버드</a></Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link href="/profile"><a>프로필</a></Link>                
-                </Menu.Item>
-                <Menu.Item>
-                    <Input.Search enterButton style={{ verticalAlign: 'middle' }}/>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link href="/signup"><a>회원가입</a></Link>                    
-                </Menu.Item>
-            </Menu>
-
-            <Row gutter={8}>
-                <Col xs={24} md={6}>   
-                    {//isLoggedIn ? <UserProfile setIsLoggedIn={setIsLoggedIn} /> : /*<LoginForm setIsLoggedIn = {setIsLoggedIn} 이제 프롭스로 받을 필요 없음. />
-                        me ? <UserProfile /> : <LoginForm /> 
-                    }
-                </Col>
-                <Col xs={24} md={12}>
-                    {children}
-                </Col>
-                <Col xs={24} md={6}>
-                    오른쪽 메뉴
-                </Col>   
-            </Row>
-        </div>
-    )
+const AppLayout = ({ children }) => {
+  const { me } = useSelector((state) => state.user);
+  return (
+    <div>
+      <Menu mode="horizontal">
+        <Menu.Item key="home"><Link href="/"><a>노드버드</a></Link></Menu.Item>
+        <Menu.Item key="profile"><Link href="/profile"><a>프로필</a></Link></Menu.Item>
+        <Menu.Item key="mail">
+          <Input.Search enterButton style={{ verticalAlign: 'middle' }} />
+        </Menu.Item>
+      </Menu>
+      <Row gutter={8}>
+        <Col xs={24} md={6}>
+          {me
+            ? <UserProfile />
+            : <LoginForm />}
+        </Col>
+        <Col xs={24} md={12}>
+          {children}
+        </Col>
+        <Col xs={24} md={6}>
+          <a href="https://www.zerocho.com" target="_blank" rel="noreferrer noopener">Made by ZeroCho</a>
+        </Col>
+      </Row>
+    </div>
+  );
 };
 
 AppLayout.propTypes = {
-    children: PropTypes.node.isRequired,  // 프롭스 검사하는 거임.
+  children: PropTypes.node.isRequired,
 };
 
 export default AppLayout;

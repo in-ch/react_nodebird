@@ -1,119 +1,102 @@
-import AppLayout from '../components/AppLayout';
-import Head from 'next/head';
-import { Form, Input, Checkbox, Button } from 'antd';
-import { useCallback, useState } from 'react';
-import useInput from '../hooks/useinput';
-import styled from 'styled-components';
-import { SIGN_UP_REQUEST } from '../reducers/user';
+import React, { useCallback, useState, useEffect } from 'react';
+import { Button, Checkbox, Form, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import Router from 'next/router';
+import Head from 'next/head';
 
-const ErrorMessage = styled.div`
-    color:red;
-`;
-
-const TermErrorMessage = styled.div`    
-    color:red;
-`;
+import { SIGN_UP_REQUEST } from '../reducers/user';
+import AppLayout from '../components/AppLayout';
+import useInput from '../hooks/useInput';
 
 const Signup = () => {
-/*  const [id, setId] = useState('');
-    const [nickname, setNickname] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordCheck, setPasswordCheck] = useState('');
-    const [passwordError, setPasswordError] = useState(false);
+  const [passwordCheck, setPasswordCheck] = useState('');
+  const [term, setTerm] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [termError, setTermError] = useState(false);
 
-    const onChangeId = useCallback(()=>{
-        setId(e.target.value);
-    }, []);
-    const onChangeNickname = useCallback(()=>{
-        setNickname(e.target.value);
-    }, []);
-    const onChangePassword = useCallback(()=>{
-        setPassword(e.target.value);
-    }, []);
-    const onChangePasswordCheck = useCallback(()=>{
-        setPasswordCheck(e.target.value);
-    }, []); 
-    const onChangePasswordError = useCallback(()=>{
-    }, []); */
-    const dispatch = useDispatch();
-    const { signUpLoading } = useSelector((state) => state.user);
+  const [email, onChangeEmail] = useInput('');
+  const [nick, onChangeNick] = useInput('');
+  const [password, onChangePassword] = useInput('');
+  const dispatch = useDispatch();
+  const { isSigningUp, me } = useSelector((state) => state.user);
 
-    const [email, onChangeEmail] = useInput('');
-    const [nickname, onChangeNickname] = useInput('');
-    const [password, onChangePassword] = useInput('');
+  useEffect(() => {
+    if (me) {
+      alert('로그인했으니 메인페이지로 이동합니다.');
+      Router.push('/');
+    }
+  }, [me && me.id]);
 
-    const [passwordCheck, setPasswordCheck] = useState('');  // 여기는 다른 함수들과 좀 다르므로 hooks를 쓸 수가 없다. 
-    const [passwordError, setPasswordError] = useState(false);
-    const [term, setTerm] = useState('');
-    const [termError, setTermError] = useState(true);
+  const onSubmit = useCallback(() => {
+    if (password !== passwordCheck) {
+      return setPasswordError(true);
+    }
+    if (!term) {
+      return setTermError(true);
+    }
+    return dispatch({
+      type: SIGN_UP_REQUEST,
+      data: {
+        email,
+        password,
+        nick,
+      },
+    });
+  }, [email, password, passwordCheck, term]);
 
-    const onSubmit = useCallback(()=>{
-        if(password !== passwordCheck) {
-            return setPasswordError(true);
-        } 
-        if(!term){
-            return setTermError(true);
-        }
-        dispatch({
-            type: SIGN_UP_REQUEST,
-            data: {email, password, nickname}
-        });
-    }, [password,passwordCheck, term]);
+  const onChangePasswordCheck = useCallback((e) => {
+    setPasswordError(e.target.value !== password);
+    setPasswordCheck(e.target.value);
+  }, [password]);
 
-    const onChangePasswordCheck = useCallback((e) => {
-        setPasswordCheck(e.target.value);
-        setPasswordError(e.target.value !== password);
+  const onChangeTerm = useCallback((e) => {
+    setTermError(false);
+    setTerm(e.target.checked);
+  }, []);
 
-    },[password]);
-
-    const onChangeTerm = useCallback((e) => {
-        setTerm(e.target.checked);
-        setTermError(false);
-
-    },[password]);
-
-    
-    return(   
-        <>
-            <Head>
-                <meta charSet="utf-8" />
-                <title>인치의 회원가입 페이지</title>
-            </Head>
-            <Form onFinish={onSubmit}>
-                <div>
-                    <label htmlFor="user-email">이메일</label>
-                    <br/>
-                    <Input name="user-email" value={email} required onChange={onChangeEmail}/>
-                </div>
-                <div>
-                    <label htmlFor="user-nickname">닉네임</label>
-                    <br/>
-                    <Input name="user-nickname" value={nickname} required onChange={onChangeNickname}/>
-                </div>
-                <div>
-                    <label htmlFor="user-password">비밀번호</label>
-                    <br/>
-                    <Input name="user-password" type="password" value={password} required onChange={onChangePassword}/>
-                </div>
-                <div>
-                    <label htmlFor="user-password-check">비밀번호 확인</label>
-                    <br/>
-                    <Input name="user-password-check" type="password" value={passwordCheck} required onChange={onChangePasswordCheck}/>
-                    {passwordError && <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>}
-                </div>
-                <div>
-                    <Checkbox name="user-term" checked={term} onChange = {onChangeTerm}>약관에 동의하시겠습니까?</Checkbox>
-                    {termError&& <TermErrorMessage>약관에 동의하셔야 합니다.</TermErrorMessage>}
-                </div>
-                <div style={{marginTop: 10}}>
-                    <Button type="primary" htmlType="submit" loading={signUpLoading}>가입하기</Button>
-                </div>
-            </Form>
-
-            <AppLayout>회원가입 페이지</AppLayout>
-        </>
-    )
+  return (
+    <AppLayout>
+      <Head>
+        <title>회원가입 | NodeBird</title>
+      </Head>
+      <Form onFinish={onSubmit} style={{ padding: 10 }}>
+        <div>
+          <label htmlFor="user-email">아이디</label>
+          <br />
+          <Input name="user-email" value={email} required onChange={onChangeEmail} />
+        </div>
+        <div>
+          <label htmlFor="user-nick">닉네임</label>
+          <br />
+          <Input name="user-nick" value={nick} required onChange={onChangeNick} />
+        </div>
+        <div>
+          <label htmlFor="user-password">비밀번호</label>
+          <br />
+          <Input name="user-password" type="password" value={password} required onChange={onChangePassword} />
+        </div>
+        <div>
+          <label htmlFor="user-password-check">비밀번호체크</label>
+          <br />
+          <Input
+            name="user-password-check"
+            type="password"
+            value={passwordCheck}
+            required
+            onChange={onChangePasswordCheck}
+          />
+          {passwordError && <div style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</div>}
+        </div>
+        <div>
+          <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>제로초 말을 잘 들을 것을 동의합니다.</Checkbox>
+          {termError && <div style={{ color: 'red' }}>약관에 동의하셔야 합니다.</div>}
+        </div>
+        <div style={{ marginTop: 10 }}>
+          <Button type="primary" htmlType="submit" loading={isSigningUp}>가입하기</Button>
+        </div>
+      </Form>
+    </AppLayout>
+  );
 };
 
 export default Signup;

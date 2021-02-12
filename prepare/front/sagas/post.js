@@ -17,6 +17,7 @@ import {
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
 } from '../reducers/post';
+
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
 function loadPostsAPI(data) {
@@ -32,7 +33,6 @@ function* loadPosts(action) {
       data: generateDummyPost(10),
     });
   } catch (err) {
-    console.error(err);
     yield put({
       type: LOAD_POSTS_FAILURE,
       data: err.response.data,
@@ -46,7 +46,6 @@ function addPostAPI(data) {
 
 function* addPost(action) {
   try {
-    // const result = yield call(addPostAPI, action.data);
     yield delay(1000);
     const id = shortId.generate();
     yield put({
@@ -61,7 +60,6 @@ function* addPost(action) {
       data: id,
     });
   } catch (err) {
-    console.error(err);
     yield put({
       type: ADD_POST_FAILURE,
       data: err.response.data,

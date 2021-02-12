@@ -1,6 +1,5 @@
 import shortId from 'shortid';
 import faker from 'faker';
-
 import produce from '../util/produce';
 
 export const initialState = {
@@ -20,25 +19,6 @@ export const initialState = {
   addCommentDone: false,
   addCommentError: null,
 };
-
-export const generateDummyPost = (number) => Array(number).fill().map(() => ({
-  id: shortId.generate(),
-  User: {
-    id: shortId.generate(),
-    nickname: faker.name.findName(),
-  },
-  content: faker.lorem.paragraph(),
-  Images: [{
-    src: faker.image.image(),
-  }],
-  Comments: [{
-    User: {
-      id: shortId.generate(),
-      nickname: faker.name.findName(),
-    },
-    content: faker.lorem.sentence(),
-  }],
-}));
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
@@ -66,12 +46,31 @@ export const addComment = (data) => ({
   data,
 });
 
+export const generateDummyPost = (number) => Array(number).fill().map(() => ({
+  id: shortId.generate(),
+  User: {
+    id: shortId.generate(),
+    nickname: faker.name.findName(),
+  },
+  content: faker.lorem.paragraph(),
+  Images: [{
+    src: faker.image.image(),
+  }],
+  Comments: [{
+    User: {
+      id: shortId.generate(),
+      nickname: faker.name.findName(),
+    },
+    content: faker.lorem.sentence(),
+  }],
+}));
+
 const dummyPost = (data) => ({
   id: data.id,
   content: data.content,
   User: {
     id: 1,
-    nickname: '제로초',
+    nickname: '인철',
   },
   Images: [],
   Comments: [],
@@ -82,9 +81,10 @@ const dummyComment = (data) => ({
   content: data,
   User: {
     id: 1,
-    nickname: '제로초',
+    nickname: '인철',
   },
 });
+
 // 이전 상태를 액션을 통해 다음 상태로 만들어내는 함수(불변성은 지키면서)
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
@@ -111,7 +111,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case ADD_POST_SUCCESS:
       draft.addPostLoading = false;
       draft.addPostDone = true;
-      draft.mainPosts.unshift(dummyPost(action.data));
+      //draft.mainPosts.unshift(dummyPost(action.data));
       break;
     case ADD_POST_FAILURE:
       draft.addPostLoading = false;

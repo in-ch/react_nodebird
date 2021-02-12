@@ -1,7 +1,6 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { Form, Input, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-
 import { ADD_POST_REQUEST } from '../reducers/post';
 
 const PostForm = () => {
@@ -21,10 +20,11 @@ const PostForm = () => {
   }, [addPostDone]);
 
   const onSubmitForm = useCallback(() => {
+    let v = 'Hello';
     dispatch({
       type: ADD_POST_REQUEST,
       data: {
-        text,
+        v,
       },
     });
   }, []);
@@ -38,13 +38,13 @@ const PostForm = () => {
       <Input.TextArea maxLength={140} placeholder="어떤 신기한 일이 있었나요?" value={text} onChange={onChangeText} />
       <div>
         <input type="file" multiple hidden ref={imageInput} />
-        <Button onClick={onClickImageUpload}>이미지 업로드</Button>
+        <Button onClick={onClickImageUpload}>이미지 업로드하장</Button>
         <Button type="primary" style={{ float: 'right' }} htmlType="submit" loading={addPostLoading}>짹짹</Button>
       </div>
       <div>
         {imagePaths.map((v) => (
           <div key={v} style={{ display: 'inline-block' }}>
-            <img src={`http://localhost:3065/${v}`} style={{ width: '200px' }} alt={v} />
+            <img src={`http://localhost:3000/${v}`} style={{ width: '200px' }} alt={v} />
             <div>
               <Button>제거</Button>
             </div>

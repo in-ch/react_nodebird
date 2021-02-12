@@ -39,7 +39,6 @@ const PostCard = ({ post }) => {
     });
   }, []);
   useEffect(()=>{
-    console.log(post.content);
   },[]);
 
   return (

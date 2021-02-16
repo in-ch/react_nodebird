@@ -1,30 +1,12 @@
 const express = require('express');
-
+const postRouter = require('./routes/post');
 const app = express(); 
 
 app.get('/', (req, res) => {
     res.send('hello express');
 });
 
-app.get('/api', (req, res) => {
-    res.send('hello api');
-});
-
-app.get('/api/posts', (req, res) => {
-    res.send('hello posts');
-});
-
-app.post('/api/post', (req, res) => {
-    res.json([
-        {id : 1, content: 'hello'},
-        {id : 2, content: 'hello2'},
-        {id : 3, content: 'hello3'},
-    ])
-});
-
-app.delete('/api/post', (req, res) => {    //delete는 포스트 맨이 필요하다. 
-
-});
+app.use('/post', postRouter);
 
 // app.get -> 가져오다.
 // app.post -> 생성하다.
@@ -37,4 +19,6 @@ app.delete('/api/post', (req, res) => {    //delete는 포스트 맨이 필요�
 
 app.listen(3065, () => {
     console.log('서버 실행 중');
-});
+}); 
+
+// sequelize는 database를 자바스크립트로 조작할 수 있게 하는 라이브러리이다. 

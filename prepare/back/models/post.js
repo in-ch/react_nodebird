@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Post.associate = (db) => {
         db.Post.belongsTo(db.User);
-        db.Post.belongsToMany(db.Hashtag);  // 다대다관계일 때는 테이블이 따로 생겨서 짝지어진다. 중요한 거니깐 기억해 두기 ... !! 설계를 이렇게 했구나.. 몰랐구나.. 알았으면 편했을 텐데...
+        db.Post.belongsToMany(db.Hashtag, {through:'PostHashtag'});  // 다대다관계일 때는 테이블이 따로 생겨서 짝지어진다. 중요한 거니깐 기억해 두기 ... !! 설계를 이렇게 했구나.. 몰랐구나.. 알았으면 편했을 텐데...
         db.Post.hasMany(db.Comment);
         db.Post.hasMany(db.Image);
         db.Post.belongsToMany(db.User,{through: 'Like', as: 'Likers'});

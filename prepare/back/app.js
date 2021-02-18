@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 const app = express(); 
@@ -18,9 +19,13 @@ app.use(express.urlencoded({extended: true}));
 app.get('/', (req, res) => {
     res.send('hello express');
 });
-
+app.use(cors({
+        origin:'*', // 나중에 바꿔줄꺼임.
+        credentials: false, // 나중에 true로 바꿔야함 
+    }
+));
 app.use('/post', postRouter);
-app.use('user', userRouter);
+app.use('/user', userRouter);
 // app.get -> 가져오다.
 // app.post -> 생성하다.
 // app.put -> 전체수정

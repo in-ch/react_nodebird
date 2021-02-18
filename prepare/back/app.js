@@ -1,7 +1,9 @@
 const express = require('express');
 const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
 const app = express(); 
 const db = require('./models');
+
 db.sequelize.sync()
     .then(()=>{
         console.log('db연결 성공');
@@ -9,12 +11,16 @@ db.sequelize.sync()
     .catch(()=>{
         console.log('db연결 실패');
     })
+
+app.use(express.json());   
+app.use(express.urlencoded({extended: true}));
+
 app.get('/', (req, res) => {
     res.send('hello express');
 });
 
 app.use('/post', postRouter);
-
+app.use('user', userRouter);
 // app.get -> 가져오다.
 // app.post -> 생성하다.
 // app.put -> 전체수정

@@ -15,7 +15,7 @@ const Signup = () => {
   const [termError, setTermError] = useState(false);
 
   const [email, onChangeEmail] = useInput('');
-  const [nick, onChangeNick] = useInput('');
+  const [nickname, onChangeNickname] = useInput('');
   const [password, onChangePassword] = useInput('');
   const dispatch = useDispatch();
   const { isSigningUp, me } = useSelector((state) => state.user);
@@ -36,10 +36,7 @@ const Signup = () => {
     }
     return dispatch({
       type: SIGN_UP_REQUEST,
-      data: {
-        email,
-        password,
-        nick,
+      data: { email, password, nickname,
       },
     });
   }, [email, password, passwordCheck, term]);
@@ -68,7 +65,7 @@ const Signup = () => {
         <div>
           <label htmlFor="user-nick">닉네임</label>
           <br />
-          <Input name="user-nick" value={nick} required onChange={onChangeNick} />
+          <Input name="user-nick" value={nickname} required onChange={onChangeNickname} />
         </div>
         <div>
           <label htmlFor="user-password">비밀번호</label>

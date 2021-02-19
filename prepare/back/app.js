@@ -4,6 +4,7 @@ const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 const app = express(); 
 const db = require('./models');
+const passportConfig = require('./passport');
 
 db.sequelize.sync()
     .then(()=>{
@@ -12,6 +13,8 @@ db.sequelize.sync()
     .catch(()=>{
         console.log('db연결 실패');
     })
+
+passportConfig();
 
 app.use(express.json());   
 app.use(express.urlencoded({extended: true}));

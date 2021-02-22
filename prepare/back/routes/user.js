@@ -15,10 +15,9 @@ router.post('/login', (req, res, next) => {
         } 
         return req.login(user, async(loginErr) => {  // passport 로그인이다. 
             if(loginErr) {
-                console.error(loginErr);
                 return next(loginErr);
             }
-            return res.json(user);   
+            return res.status(200).json(user);   
         });
     })(req, res, next); // 이게 미들웨이 확장이라고 한다.
 }); 
@@ -47,6 +46,13 @@ router.post('/', async (req, res, next) => {
         console.log(error);
         next(error);  // status (500)
     }
+});
+
+router.post('user/logout', (req, res, next)=> {
+    console.log(req.user);
+    req.logout();
+    req.session.destroy();
+    res.send('ok');  // 로그인 성공
 });
 
 

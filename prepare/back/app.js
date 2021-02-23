@@ -38,10 +38,11 @@ app.get('/', (req, res) => {
     res.send('hello express');
 });
 app.use(cors({
-        origin:'*', // 나중에 바꿔줄꺼임.
-        credentials: false, // 나중에 true로 바꿔야함 
-    }
-));
+    origin: 'http://localhost:3000',
+    credentials: true,
+}));
+
+
 app.use('/post', postRouter);
 app.use('/user', userRouter);
 // app.get -> 가져오다.

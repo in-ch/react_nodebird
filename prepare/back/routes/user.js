@@ -33,7 +33,6 @@ router.post('/', async (req, res, next) => {
         if(exUser) {
             return res.status(403).send('이미 사용 중인 아이디입니다.');
         }
-
         const hashedPassword = await bcrypt.hash(req.body.password,10);
         
         await User.create({

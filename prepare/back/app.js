@@ -37,6 +37,7 @@ app.use(passport.session()); // 로그인 설정 끝
 app.get('/', (req, res) => {
     res.send('hello express');
 });
+
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true,

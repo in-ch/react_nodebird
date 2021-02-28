@@ -4,23 +4,24 @@ const { User } = require('../models');
 const router = express.Router();
 const passport = require('passport');
 
+
 router.post('/login', (req, res, next) => {
-    passport.authenticate('local', (error,user,info)=>{
-        if(err){
-            console.error(error);
-            return next(err);
+    passport.authenticate('local', (err, user, info) => {
+      if (err) {
+        console.error(err);
+        return next(err);
+      }
+      if (info) {
+        return res.status(200).send(info.reason);
+      }
+      return req.login(user, async (loginErr) => {
+        if (loginErr) {
+          console.error(loginErr);
+          return next(loginErr);
         }
-        if(info) {
-            return res.status(401).send(info.reason);  // 403은 금지이고 401은 허가되지 않음이다.
-        } 
-        return req.login(user, async(loginErr) => {  // passport 로그인이다. 
-            if(loginErr) {
-                return next(loginErr);
-            }
-            return res.status(200).json(user);   
-        });
-    })(req, res, next); // 이게 미들웨이 확장이라고 한다.
-}); 
+      });
+    })(req, res, next);
+  });
 
 router.post('/', async (req, res, next) => { 
     // 구조분해 했기 때문에 db.User라고 안 쓰고 User라고 쓸 수 있다.
@@ -47,7 +48,7 @@ router.post('/', async (req, res, next) => {
     }
 });
 
-router.post('user/logout', (req, res, next)=> {
+router.post('logout', (req, res, next)=> {
     console.log(req.user);
     req.logout();
     req.session.destroy();

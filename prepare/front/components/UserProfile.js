@@ -5,9 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { LOG_OUT_REQUEST } from '../reducers/user';
 
 const UserProfile = () => {
-  const { me, logOutLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
+  const { me, logOutLoading } = useSelector((state) => state.user);
   const onLogout = useCallback(() => {
     dispatch({
       type: LOG_OUT_REQUEST,

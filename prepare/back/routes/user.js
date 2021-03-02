@@ -3,9 +3,9 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const passport = require('passport');
 const { User, Post } = require('../models');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
-
-router.post('/login', (req, res, next) => {
+router.post('/login',isNotLoggedIn, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
       if (err) {
         console.error(err);
@@ -43,7 +43,7 @@ router.post('/login', (req, res, next) => {
     })(req, res, next);
   });
 
-router.post('/', async (req, res, next) => { 
+router.post('/', isNotLoggedIn, async (req, res, next) => { 
     // 구조분해 했기 때문에 db.User라고 안 쓰고 User라고 쓸 수 있다.
     try {
         const exUser = await User.findOne({
@@ -68,8 +68,7 @@ router.post('/', async (req, res, next) => {
     }
 });
 
-router.post('logout', (req, res, next)=> {
-    console.log(req.user);
+router.post('/logout', isLoggedIn, (req, res, next)=> {
     req.logout();
     req.session.destroy();
     res.send('ok');  // 로그인 성공

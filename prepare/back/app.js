@@ -55,6 +55,12 @@ app.use('/user', userRouter);
 // app.head -> 헤더만 가져오기(헤더/바디)
 // 이게 restAPI 라고 하는데, 사실 잘 안 지킨다. 애매한 건 그냥 post로 하고 팀원들끼리 서로 합의하는 게 대부분이긴 하다. 
 
+
+app.use((err, req, res, next) => {
+    
+});   // 에러 처리를 커스터마이징 할 수 있다. 
+
+
 app.listen(3065, () => {
     console.log('서버 실행 중');
 }); 

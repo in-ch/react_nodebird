@@ -5,6 +5,36 @@ const passport = require('passport');
 const { User, Post } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
+router.get('/', async (req, res, next) => {    // 로그인 유지를 위한 코드 
+  try{
+    if(req.user) {
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: req.user.id },
+        attributes: {
+          exclude: ['password']
+        },
+        include: [{
+          model: Post,
+          attributes: ['id'],
+        }, {
+          model: User,
+          as: 'Followings',
+          attributes: ['id'],
+        }, {
+          model: User,
+          as: 'Followers',
+          attributes: ['id'],
+        }]
+      })
+      res.status(200).json(fullUserWithoutPassword);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch(error){
+    console.error(error);
+    next(error);
+  }
+})
 router.post('/login',isNotLoggedIn, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
       if (err) {

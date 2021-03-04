@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
 
 app.use(cors({
     origin: 'http://localhost:3000',
-    credentials: true,
+    credentials: true,  // 쿠키 같이 전달하고 싶으면 true로 하면 된다. 
 }));
 
 

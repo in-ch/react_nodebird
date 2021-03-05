@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -43,9 +44,10 @@ app.use(cors({
     credentials: true,  // 쿠키 같이 전달하고 싶으면 true로 하면 된다. 
 }));
 
-
 app.use('/post', postRouter);
 app.use('/user', userRouter);
+app.use('/posts', postsRouter);
+
 // app.get -> 가져오다.
 // app.post -> 생성하다.
 // app.put -> 전체수정
@@ -55,11 +57,9 @@ app.use('/user', userRouter);
 // app.head -> 헤더만 가져오기(헤더/바디)
 // 이게 restAPI 라고 하는데, 사실 잘 안 지킨다. 애매한 건 그냥 post로 하고 팀원들끼리 서로 합의하는 게 대부분이긴 하다. 
 
-
 app.use((err, req, res, next) => {
     
 });   // 에러 처리를 커스터마이징 할 수 있다. 
-
 
 app.listen(3065, () => {
     console.log('서버 실행 중');

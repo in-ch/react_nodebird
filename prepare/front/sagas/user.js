@@ -29,7 +29,6 @@ function loadUserAPI(data) {
 function* loadUser(action) {
   try {
     const result = yield call(loadUserAPI, action.data);
-   
     yield put({
       type: LOAD_MY_INFO_SUCCESS,
       data: result.data,
@@ -50,7 +49,6 @@ function logInAPI(data) {
 function* logIn(action) {
   try {
     const result = yield call(logInAPI, action.data);
-   
     yield put({
       type: LOG_IN_SUCCESS,
       data: result.data,
@@ -125,6 +123,7 @@ export default function* userSaga() {
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchSignUp),
+    fork(watchLoadUser),
   ]);
 }
 

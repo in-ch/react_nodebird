@@ -4,6 +4,7 @@ const router = express.Router();
 const passport = require('passport');
 const { User, Post } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const user = require('../models/user');
 
 router.get('/', async (req, res, next) => {    // 로그인 유지를 위한 코드 
   try{
@@ -112,6 +113,63 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
       where: {id:req.user.id},
     });
     res.status(200).json({nickname: req.body.nickname});
+  } catch(error){
+      console.log(error);
+      next(error);  // status (500)
+  }
+});
+
+router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => { 
+  try {
+    await User.findOne({where: {id: req.params.userId}});
+    if(!user){
+      res.status(403).send('유령을 팔로우하실려는 군요.');
+    }
+    await user.addFollowers(req.user.id);
+    res.status(200).json({id: parseInt(req.params.userId,10)});
+  } catch(error){
+      console.log(error);
+      next(error);  // status (500)
+  }
+});
+
+router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => { 
+  try {
+    await User.findOne({where: {UserId: req.params.userId}});
+    if(!user){
+      res.status(403).send('유령을 언팔로우하실려는 군요.');
+    }
+    await user.removeFollowers(req.user.id);
+    res.status(200).json({UserId: parseInt(req.params.userId,10)});
+  } catch(error){
+      console.log(error);
+      next(error);  // status (500)
+  }
+});
+
+router.get('/followers', isLoggedIn, async (req, res, next) => { 
+  try {
+    await User.findOne({where: {UserId: req.user.id}});
+    if(!user){
+      res.status(403).send('아이디가 없으신데');
+    }
+    const followers = await user.getFollowers();
+    res.status(200).json(followers);
+  } catch(error){
+      console.log(error);
+      next(error);  // status (500)
+  }
+});
+
+
+router.get('/followings', isLoggedIn, async (req, res, next) => { 
+  try {
+    await User.findOne({where: {UserId: req.user.id}});
+    if(!user){
+      res.status(403).send('ㅇㅏ이디가 없으신데');
+    }
+    const followings = await user.getFollowings();
+    res.status(200).json(followings);
   } catch(error){
       console.log(error);
       next(error);  // status (500)

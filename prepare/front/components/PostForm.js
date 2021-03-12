@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { Form, Input, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import { ADD_POST_REQUEST,UPLOAD_IMAGES_REQUEST } from '../reducers/post';
+import { ADD_POST_REQUEST,UPLOAD_IMAGES_REQUEST,REMOVE_IMAGE } from '../reducers/post';
 import { addPost } from '../reducers/post';
 
 const PostForm = () => {
@@ -32,12 +32,33 @@ const PostForm = () => {
   }, [addPostDone]);
 
   const onSubmitForm = useCallback(() => {
-    dispatch(addPost(text));
-  }, [text]);
+    const formData = new FormData();
+    if(!text ||!text.trim()){
+      alert('게시글을 작성해 주세요.');
+      return;
+    }
+    imagePaths.forEach((p)=> {
+      formData.append('image', p);
+    });
+    formData.append('content', text);
+    dispatch({
+      type: ADD_POST_REQUEST,
+      data: {
+        content:text,
+        imagePaths
+      }
+    });
+  }, [text, imagePaths]);
 
   const onChangeText = useCallback((e) => {
     setText(e.target.value);
   }, []);
+
+  const onRemoveImage = useCallback((index) => () => {
+    displatch({
+      type:REMOVE_IMAGE,
+    });
+  })
 
   return (
     <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmitForm}>
@@ -50,9 +71,9 @@ const PostForm = () => {
       <div>
         {imagePaths.map((v) => (
           <div key={v} style={{ display: 'inline-block' }}>
-            <img src={`http://localhost:3000/${v}`} style={{ width: '200px' }} alt={v} />
+            <img src={`http://localhost:3065/${v}`} style={{ width: '200px' }} alt={v} />
             <div>
-              <Button>제거</Button>
+              <Button onClick={onRemoveImage(i)}>제거</Button>
             </div>
           </div>
         ))}

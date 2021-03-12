@@ -12,6 +12,8 @@ const passportConfig = require('./passport');
 const dotenv = require('dotenv');
 const router = require('./routes/user');
 const { isLoggedIn } = require('./routes/middlewares');
+const path = require('path');
+
 dotenv.config();
 
 db.sequelize.sync()
@@ -46,6 +48,7 @@ app.use(cors({
     credentials: true,  // 쿠키 같이 전달하고 싶으면 true로 하면 된다. 
 }));
 
+app.use('/', express.static(path.join(__dirname, 'uploads'))); // 운영체제의 차이점 떄문에 path.join을 사용해서 맥과 윈도우 파일 형태 통일화를 함.
 app.use('/post', postRouter);
 app.use('/user', userRouter);
 app.use('/posts', postsRouter);

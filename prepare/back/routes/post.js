@@ -4,7 +4,7 @@ const fs= require('fs');
 const router = express.Router();
 const multer = require('multer');
 
-const { Post, User, Image } = require('../models');
+const { Post, User, Image, Hashtag } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 try {
@@ -28,12 +28,31 @@ const upload = multer({
   limits : { fileSize : 20 * 1024* 1024 }, // 20 MB
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
     try{
+        const hashtags = req.body.content.match(/#[^\s#]+/g);
         const post = await Post.create({
             content: req.body.content,
             UserId: req.user.id,   //desezrizer 때문에 접근 가능 
         });
+        if(hashtags){
+            await Promis.all(hashtags.map((tag)=> Hashtag.findOrCreate({ 
+                where : {
+                            name: tag.slice(1).toLowerCase()
+                        },
+            })));
+            await post.addHashtags(result.map((v)=> v[0]));  // findOrCreate때문에 값이 [#노드, true] , [#노드, true] 이런 식으로 나오기 떄문에 저런 식으로 저장해 주는 것이다.
+        }
+        if(req.body.image){
+            if(Array.isArray(req.body.image)) {
+                const images = await Promise.all(req.body.image.map((image)=> Image.create({src: image})));
+                await post.addImages(images);
+            } else {
+                const image = await Image.create({src:req.body.image});
+                await post.addImages(image);
+            }
+        }
+
         const fullPost = await Post.findOne({
             where: { id: post.id },
             include: [{

@@ -1,7 +1,32 @@
 const express = require('express');
+const path= require('path');
+const fs= require('fs');
 const router = express.Router();
+const multer = require('multer');
+
 const { Post, User, Image } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+
+try {
+    fs.accessSync('uploads');
+} catch(error){
+    console.log('업로드 폴더가 없으므로 생성합니다.');
+    fs.mkdirSync('uploads');
+}
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    }, 
+    filename(req, file, done){
+      const ext = path.extname(file.originalname); // 확장자 추출(.png)
+      const basename = path.basename(file.originalname, ext); // 파일 이름
+      done(null, basename + new Data().getTime() + ext); 
+    }
+  }),
+  limits : { fileSize : 20 * 1024* 1024 }, // 20 MB
+});
 
 router.post('/', async (req, res, next) => {
     try{
@@ -114,6 +139,12 @@ router.delete('/:postId/delete',isLoggedIn, async (req,res,next)=> {
         next(error);
     }
 });
+
+router.post('/images', isLoggedIn, upload.array('image'), async(req,res,next )=> {  // 하나면 array 대신 single 쓰면 됨. fills는 파일 input이 두개 있을 때
+    console.log(req.files);
+    res.json(req.files.map((v)=> v.filename));
+})
+
 
 
 module.exports = router;

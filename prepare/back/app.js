@@ -10,6 +10,8 @@ const app = express();
 const db = require('./models');
 const passportConfig = require('./passport');
 const dotenv = require('dotenv');
+const router = require('./routes/user');
+const { isLoggedIn } = require('./routes/middlewares');
 dotenv.config();
 
 db.sequelize.sync()
@@ -64,5 +66,6 @@ app.use((err, req, res, next) => {
 app.listen(3065, () => {
     console.log('서버 실행 중');
 }); 
+
 
 // sequelize는 database를 자바스크립트로 조작할 수 있게 하는 라이브러리이다. 

@@ -6,6 +6,7 @@ const { User, Post } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const user = require('../models/user');
 
+
 router.get('/', async (req, res, next) => {    // 로그인 유지를 위한 코드 
   try{
     if(req.user) {

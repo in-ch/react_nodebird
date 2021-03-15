@@ -164,6 +164,82 @@ router.post('/images', isLoggedIn, upload.array('image'), async(req,res,next )=>
     res.json(req.files.map((v)=> v.filename));
 })
 
+router.post('/:postId/retweet',isLoggedIn, async (req,res,next)=> {
+    try{
+        const post = await Post.findOne({
+            where: {id: req.params.postId},
+            include: [{
+                model: Post,
+                as: 'Retweet',
+            }],
+        });
+        if(!post){
+            return res.status(403).send('게시글이 존재하지 않습니다.');
+        }
+        if(req.user.id === post.UserId || (post.Retweet && post.Retweet.UserId === req.user.id)){
+            return res.status(403).send('자기 글은 리트윗할 수 없습니다.');
+        }
+        const retweetTargetId = post.RetweetId || post.id; 
+        const exPost = await Post.findOne({
+            where: {
+                Userid: req.user.id,
+                RetweetId: retweetTargetId,
+            },
+        });
+        if(exPost){
+            return res.status(403).send('이미 리트윗했습니다.');
+        }
+        const retweet = await Post.create({
+            UserId: req.user.id,
+            RetweetId: retweetTargetId,
+            content: 'retweet',
+        });
+        const retweetWithPrevPost = await Post.findOne({
+            where: {id: retweet.id},
+            include: [{
+                model: Post,
+                as: 'Retweet',
+                include: [{
+                    model: User,
+                    attributes: ['id','nickname'],
+                }], 
+            },{
+                model: User,
+                attributes: ['id','nickname'],
+            },{
+                model: Image,
+            },{
+                model: User,
+                as: 'Likers',
+                attributes: ['id'],
+            },{
+                model: Comment,
+                include: [{
+                    model: User,
+                    attributes: ['id','nickname'],
+                }]
+            },{
+                model: Post,
+                as: 'Retweet',
+                include: [{
+                    model: User,
+                    attributes: ['id','nickname'],
+                }],     
+            }], 
+        });
+        
+        res.status(201).json(retweetWithPrevPost);
+    } catch(error){
+        console.error(error);
+        next(error);
+    }
+});
+
+router.post('/images', isLoggedIn, upload.array('image'), async(req,res,next )=> {  // 하나면 array 대신 single 쓰면 됨. fills는 파일 input이 두개 있을 때
+    console.log(req.files);
+    res.json(req.files.map((v)=> v.filename));
+})
+
 
 
 module.exports = router;

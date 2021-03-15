@@ -11,7 +11,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
   const { mainPosts, hasMorePost, loadPostsLoading } = useSelector((state) => state.post);
-
+  import { retweetError } from '../reducers/post';
   useEffect(() => {
     dispatch({
       type: LOAD_MY_INFO_REQUEST,
@@ -21,6 +21,13 @@ const Home = () => {
       type: LOAD_POSTS_REQUEST,
     });
   }, []);
+
+  useEffect(()=>{
+    if(retweetError){
+      return alert(retweetError); // 리랜더링되면서 무한으로 뜨는데 마지막 강의에서 고칠 것이다. 
+    }
+  },[retweetError]);
+
 
   useEffect(() => {
     function onScroll() {

@@ -30,47 +30,47 @@ const upload = multer({
 
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
     try{
-        const hashtags = req.body.content.match(/#[^\s#]+/g);
+        // // const hashtags = req.body.content.match(/#[^\s#]+/g);
         const post = await Post.create({
-            content: req.body.content,
-            UserId: req.user.id,   //desezrizer 때문에 접근 가능 
+             content: req.body.data,
+            //  UserId: req.user.id,
         });
-        if(hashtags){
-            await Promis.all(hashtags.map((tag)=> Hashtag.findOrCreate({ 
-                where : {
-                            name: tag.slice(1).toLowerCase()
-                        },
-            })));
-            await post.addHashtags(result.map((v)=> v[0]));  // findOrCreate때문에 값이 [#노드, true] , [#노드, true] 이런 식으로 나오기 떄문에 저런 식으로 저장해 주는 것이다.
-        }
-        if(req.body.image){
-            if(Array.isArray(req.body.image)) {
-                const images = await Promise.all(req.body.image.map((image)=> Image.create({src: image})));
-                await post.addImages(images);
-            } else {
-                const image = await Image.create({src:req.body.image});
-                await post.addImages(image);
-            }
-        }
-
-        const fullPost = await Post.findOne({
-            where: { id: post.id },
-            include: [{
-                model: Image,
-            },{
-                model: Comment,
-                include: [{
-                    model: user,  // 댓글 작성자
-                    attributes: ['id','nickname'],
-                }]
-            },{
-                model: User, // 게시글 작성자 
-                attributes: ['id','nickname'],
-            },{
-                model: User, // 좋아요 누른 사람.
-            }]
-        })
-        res.status(201).json(post);
+        // // if (hashtags) {
+        // //     const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
+        // //     where: { name: tag.slice(1).toLowerCase() },
+        // //     }))); // [[노드, true], [리액트, true]]
+        // //     await post.addHashtags(result.map((v) => v[0]));
+        // // }
+        // // if (req.body.image) {
+        // //     if (Array.isArray(req.body.image)) { // 이미지를 여러 개 올리면 image: [제로초.png, 부기초.png]
+        // //     const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image })));
+        // //     await post.addImages(images);
+        // //     } else { // 이미지를 하나만 올리면 image: 제로초.png
+        // //     const image = await Image.create({ src: req.body.image });
+        // //     await post.addImages(image);
+        // //     }
+        // // }
+        // // const fullPost = await Post.findOne({
+        // //     where: { id: post.id },
+        // //     include: [{
+        // //      model: Image,
+        // //     }, {
+        // //     model: Comment,
+        // //     include: [{
+        // //         model: User, // 댓글 작성자
+        // //         attributes: ['id', 'nickname'],
+        // //     }],
+        // //     }, {
+        // //     model: User, // 게시글 작성자
+        // //     attributes: ['id', 'nickname'],
+        // //     }, {
+        // //     model: User, // 좋아요 누른 사람
+        // //     as: 'Likers',
+        // //     attributes: ['id'],
+        // //     }]
+        // // });
+        // // res.status(201).send(fullPost);
+        res.status(201).send(post);
     } catch(error) {
         console.error(error);
         next(error);  

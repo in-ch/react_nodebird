@@ -75,7 +75,7 @@ router.post('/login',isNotLoggedIn, (req, res, next) => {
     })(req, res, next);
   });
 
-router.post('/', isNotLoggedIn, async (req, res, next) => { 
+router.post('/', async (req, res, next) => { 
     // 구조분해 했기 때문에 db.User라고 안 쓰고 User라고 쓸 수 있다.
     try {
         const exUser = await User.findOne({

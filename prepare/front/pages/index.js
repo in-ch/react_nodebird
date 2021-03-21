@@ -1,34 +1,34 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { END } from 'redux-saga';
+import axios from 'axios';
 
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
-import AppLayout from '../components/AppLayout';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
-import { LOAD_USER_REQUEST } from '../reducers/user';
+import AppLayout from '../components/AppLayout';
 import wrapper from '../store/configureStore';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 const Home = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { mainPosts, hasMorePost, loadPostsLoading, retweetError  } = useSelector((state) => state.post);
+  const { mainPosts, hasMorePosts, loadPostsLoading, retweetError } = useSelector((state) => state.post);
 
-  useEffect(()=>{
-    if(retweetError){
-      return alert(retweetError); // 리랜더링되면서 무한으로 뜨는데 마지막 강의에서 고칠 것이다. 
+  useEffect(() => {
+    if (retweetError) {
+      alert(retweetError);
     }
-  },[retweetError]);
-
+  }, [retweetError]);
 
   useEffect(() => {
     function onScroll() {
-      if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
-        if (hasMorePost && !loadPostsLoading) {
-
+      if (window.pageYOffset + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
+        if (hasMorePosts && !loadPostsLoading) {
+          const lastId = mainPosts[mainPosts.length - 1]?.id;
           dispatch({
             type: LOAD_POSTS_REQUEST,
-            data: mainPosts[mainPosts.length - 1]?.id,  // 마지막 글의 게시글 
+            lastId,
           });
         }
       }
@@ -37,28 +37,32 @@ const Home = () => {
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [mainPosts, hasMorePost, loadPostsLoading]);
+  }, [hasMorePosts, loadPostsLoading, mainPosts]);
 
   return (
     <AppLayout>
       {me && <PostForm />}
-      {mainPosts.map((c) => {
-        console.log(c);
-        <PostCard key={c.id} post={c} />
-      })}
+      {mainPosts.map((post) => <PostCard key={post.id} post={post} />)}
     </AppLayout>
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(async (context)=> {
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  console.log('getServerSideProps start');
+  console.log(context.req.headers);
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
   context.store.dispatch({
-    type:LOAD_USER_REQUEST,
+    type: LOAD_MY_INFO_REQUEST,
   });
   context.store.dispatch({
-    type:LOAD_POSTS_REQUEST,
+    type: LOAD_POSTS_REQUEST,
   });
   context.store.dispatch(END);
-  await context.store.sageTask.toPromise();
+  await context.store.sagaTask.toPromise();
 });
 
 export default Home;

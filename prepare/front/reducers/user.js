@@ -1,6 +1,9 @@
 import produce from '../util/produce';
 
 export const initialState = {
+  loadMyInfoLoading: false, // 내 정보 가져오기 시도중
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
   loadUserLoading: false, // 유저 정보 가져오기 시도중
   loadUserDone: false,
   loadUserError: null,
@@ -29,6 +32,7 @@ export const initialState = {
   loadFollowersDone: false,
   loadFollowersError: null,
   me: null,
+  userInfo: null,
   signUpData: {},
   loginData: {},
 };
@@ -36,6 +40,10 @@ export const initialState = {
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
 export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
 export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
+
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
@@ -85,7 +93,7 @@ export const logoutRequestAction = () => ({
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {  
   switch (action.type) {
-    case LOAD_MY_INFO_FAILURE:
+    case LOAD_MY_INFO_REQUEST:
       draft.loadUserLoading = true;
       draft.loadUserError = null;
       draft.loadUserDone = false;
@@ -100,6 +108,20 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.loadUserError = action.error;
       break;
 
+    case LOAD_USER_REQUEST:
+      draft.loadMyInfoLoading = true;
+      draft.loadMyInfoError = null;
+      draft.loadMyInfoDone = false;
+      break;
+    case LOAD_USER_SUCCESS:
+      draft.loadMyInfoLoading = false;
+      draft.userInfo = action.data;
+      draft.loadMyInfoDone = true;
+      break;
+    case LOAD_USER_FAILURE:
+      draft.loadMyInfoLoading = false;
+      draft.loadMyInfoError = action.error;
+      break;  
 
     case FOLLOW_REQUEST:
       draft.followLoading = true;

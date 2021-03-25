@@ -8,7 +8,6 @@ const user = require('../models/user');
 
 
 router.get('/', async (req, res, next) => {    // 로그인 유지를 위한 코드 
-  console.log(req.headers);
   try{
     if(req.user) {
       const fullUserWithoutPassword = await User.findOne({
@@ -37,7 +36,44 @@ router.get('/', async (req, res, next) => {    // 로그인 유지를 위한 코
     console.error(error);
     next(error);
   }
-})
+});
+
+router.get('/:id', async (req, res, next) => { // GET /user/3
+  try {
+    const fullUserWithoutPassword = await User.findOne({
+      where: { id: req.params.id },
+      attributes: {
+        exclude: ['password']
+      },
+      include: [{
+        model: Post,
+        attributes: ['id'],
+      }, {
+        model: User,
+        as: 'Followings',
+        attributes: ['id'],
+      }, {
+        model: User,
+        as: 'Followers',
+        attributes: ['id'],
+      }]
+    })
+    if (fullUserWithoutPassword) {
+      const data = fullUserWithoutPassword.toJSON();
+      data.Posts = data.Posts.length;
+      data.Followings = data.Followings.length;
+      data.Followers = data.Followers.length;
+      res.status(200).json(data);
+    } else {
+      res.status(404).json('존재하지 않는 사용자입니다.');
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+
 router.post('/login',isNotLoggedIn, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
       if (err) {
@@ -76,7 +112,7 @@ router.post('/login',isNotLoggedIn, (req, res, next) => {
     })(req, res, next);
   });
 
-router.post('/', async (req, res, next) => { 
+router.post('/register', async (req, res, next) => { 
     // 구조분해 했기 때문에 db.User라고 안 쓰고 User라고 쓸 수 있다.
     try {
         const exUser = await User.findOne({
@@ -107,7 +143,7 @@ router.post('/logout', isLoggedIn, (req, res, next)=> {
     res.send('ok');  // 로그인 성공
 });
 
-router.patch('/nickname', isLoggedIn, async (req, res, next) => { 
+router.patch('/nickname', async (req, res, next) => { 
   try {
     await User.update({
       nickname: req.body.nickname,

@@ -92,7 +92,7 @@ function* logOut() {
 }
 
 function signUpAPI(data) {
-  return axios.patch('/user/nickname', data);
+  return axios.post('/user/register', data);
 }
 
 function* signUp(action) {
